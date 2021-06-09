@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(solver)
 add_executable(solver equation.cpp)
 include_directories(formatter_ex_lib)

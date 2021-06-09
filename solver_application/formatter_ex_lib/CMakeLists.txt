@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(formatter_ex)
 include_directories(formatter_lib) 
 add_subdirectory(formatter_lib)
