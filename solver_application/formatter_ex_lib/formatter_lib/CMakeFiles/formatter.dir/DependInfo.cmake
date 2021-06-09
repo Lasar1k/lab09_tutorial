@@ -4,12 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/rogopl/Rogopl/workspace/projects/lab03/lab03/formatter_lib/formatter.cpp" "/home/rogopl/Rogopl/workspace/projects/lab03/lab03/formatter_lib/CMakeFiles/formatter.dir/formatter.cpp.o"
+  "/home/rogopl/travis/build/Rogopl/lab04/solver_application/formatter_ex_lib/formatter_lib/formatter.cpp" "/home/rogopl/travis/build/Rogopl/lab04/solver_application/formatter_ex_lib/formatter_lib/CMakeFiles/formatter.dir/formatter.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "formatter_ex_lib"
+  "formatter_ex_lib/formatter_lib"
   )
 
 # Targets to which this target links.
