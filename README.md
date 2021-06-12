@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.com/Rogopl/lab07_tutorial.svg?branch=master)](https://travis-ci.com/Rogopl/lab07_tutorial)
 Задаём имя
 ```sh
 $ export GITHUB_USERNAME=Rogopl
