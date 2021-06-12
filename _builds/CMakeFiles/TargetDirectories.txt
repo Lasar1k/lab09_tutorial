@@ -1,0 +1,12 @@
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/install/strip.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/edit_cache.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/test.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/package_source.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/install.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/list_install_components.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/rebuild_cache.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/package.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/check.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/install/local.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/demo.dir
+/home/rogopl/Rogopl/workspace/projects/lab07_tutorial/_builds/CMakeFiles/print.dir
