@@ -1,13 +1,10 @@
 language: cpp
 
 script:
-- cd solver_application
-- cmake .
-- make
-- cd ..
-- cd hello_world_application
-- cmake .
-- make
+- cmake -H. -B_build -DCMAKE_INSTALL_PREFIX=_install -DBUILD_TESTS=ON
+- cmake --build _build
+- cmake --build _build --target install
+- cmake --build _build --target test -- ARGS=--verbose
 
 addons:
   apt:
@@ -16,4 +13,3 @@ addons:
     packages:
       - cmake
       - cmake-data
-      - mingw-w64
