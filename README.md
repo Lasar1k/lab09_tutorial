@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Rogopl/lab07_tutorial.svg?branch=master)](https://travis-ci.com/Rogopl/lab07_tutorial)
+[![Build Status](https://travis-ci.com/Rogopl/lab08_tutorial.svg?branch=master)](https://travis-ci.com/Rogopl/lab08_tutorial)
 ```
 $ export GITHUB_USERNAME=Rogopl
 ```
