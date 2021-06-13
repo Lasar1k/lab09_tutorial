@@ -1,129 +1,128 @@
-[![Build Status](https://travis-ci.com/Rogopl/lab08_tutorial.svg?branch=master)](https://travis-ci.com/Rogopl/lab08_tutorial)
+## Laboratory work IX
+
+Данная лабораторная работа посвещена изучению процесса создания артефактов на примере **Github Release**
+
+```sh
+$ open https://help.github.com/articles/creating-releases/
 ```
+
+## Tasks
+
+- [ ] 1. Создать публичный репозиторий с названием **lab09** на сервисе **GitHub**
+- [ ] 2. Ознакомиться со ссылками учебного материала
+- [ ] 3. Получить токен для доступа к репозиториям сервиса **GitHub**
+- [ ] 4. Выполнить инструкцию учебного материала
+- [ ] 5. Составить отчет и отправить ссылку личным сообщением в **Slack**
+
+## Tutorial
+
+```sh
+$ export GITHUB_TOKEN=<полученный_токен>
 $ export GITHUB_USERNAME=Rogopl
+$ export PACKAGE_MANAGER=apt
+$ export GPG_PACKAGE_NAME=gpg
 ```
-Переходим в рабочую папку
+
+```sh
+$ $PACKAGE_MANAGER install xclip #Устанавливаем утилиту xclip, предоставляющую доступ к буферу обмена Х из коммандной строки
+$ alias gsed=sed
+$ alias pbcopy='xclip -selection clipboard'
+$ alias pbpaste='xclip -selection clipboard -o'
 ```
+Скачивание и установка пакета Go, для работы с релизами Github
+```sh
 $ cd ${GITHUB_USERNAME}/workspace
 $ pushd .
 $ source scripts/activate
+$ go get github.com/aktau/github-release
 ```
 Клонируем репозиторий
-```
-$ git clone https://github.com/${GITHUB_USERNAME}/lab07_tutorial lab08_tutorial
-$ cd lab08_tutorial
-$ git submodule update --init
+```sh
+$ git clone https://github.com/${GITHUB_USERNAME}/lab08_tutorial projects/lab09_tutorial
+$ cd projects/lab09_tutorial
 $ git remote remove origin
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab08_tutorial
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab09_tutorial
 ```
-Создаём докер и указываем базовый образ
+Заменили все упоминания lab08_tutorial на lab09_tutorial
+```sh
+$ gsed -i 's/lab08/lab09/g' README.md
 ```
-$ cat > Dockerfile <<EOF
-FROM ubuntu:18.04
-EOF
+В этом блоке мы устанавливаем GPG для шифровании информации(текста например) и для электронных цифровых подписей. Затем проверяем если ли у нас секретные ключи и потом сами генерируем это ключи под параметры которые нам предложит GPG
+```sh
+$ $PACKAGE_MANAGER install ${GPG_PACKAGE_NAME}
+$ gpg --list-secret-keys --keyid-format LONG
+$ gpg --full-generate-key
+#Вводим секретный ключ
+$ gpg --list-secret-keys --keyid-format LONG
+$ gpg -K ${GITHUB_USERNAME}
+# Сохраняем перменную с публичным ключом
+$ GPG_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep ssb | tail -1 | awk '{print $2}' | awk -F'/' '{print $2}')
+# Сохраняем переменную с секретным ключом
+$ GPG_SEC_KEY_ID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | tail -1 | awk '{print $2}' | awk -F'/' '{print $2}')
+# Выводим ключ в ASCII и копируем его в буфер обмена
+$ gpg --armor --export ${GPG_KEY_ID} | pbcopy
+$ pbpaste
+# Зесь мы должны открыть гитхаб сеттинг, и устанавливаем ключ, но у меня open не работает и поэтому я открыл не через консоль
+$ open https://github.com/settings/keys
+#Добавляем к гитхаб ключ который мы создали
+$ git config user.signingkey ${GPG_SEC_KEY_ID}
+$ git config gpg.program gpg
 ```
-Говорим докеру, что нужно будет установить
+Настраиваем скрипт для добавления сообщения к тегу
+```sh
+$ test -r ~/.bash_profile && echo 'export GPG_TTY=$(tty)' >> ~/.bash_profile
+$ echo 'export GPG_TTY=$(tty)' >> ~/.profile
 ```
-$ cat >> Dockerfile <<EOF
 
-RUN apt update
-RUN apt install -yy gcc g++ cmake
-EOF
+```sh
+$ cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+$ cmake --build _build --target package
 ```
-Копируем файлы нашего каталога и задаём рабочую папку для докера
-```
-$ cat >> Dockerfile <<EOF
-
-COPY . print/
-WORKDIR print
-EOF
-```
-В докере делаем cmake
-```
-$ cat >> Dockerfile <<EOF
-
-RUN cmake -H. -B_build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=_install
-RUN cmake --build _build
-RUN cmake --build _build --target install
-EOF
-```
-Устанавливаем значение LOG_PATH
-```
-$ cat >> Dockerfile <<EOF
-
-ENV LOG_PATH /home/logs/log.txt
-EOF
-```
-Говорим докеру где будут храниться файлы, который останутся после работы с контейнером
-```
-$ cat >> Dockerfile <<EOF
-
-VOLUME /home/logs
-EOF
-```
-Переходим к папке
-```
-$ cat >> Dockerfile <<EOF
-
-WORKDIR _install/bin
-EOF
-```
-Создаём точку входа в приложение
-```
-$ cat >> Dockerfile <<EOF
-
-ENTRYPOINT ./demo
-EOF
-```
-При попытке написать docker build -t logger . в терминале появлялось сообщение об ошибке, где я увидел слова permission и denied. Поэтому в моей голове возникла идея прописать sudo перед командой, в результате чего всё заработало.
-```
-$ sudo docker build -t logger .
-```
-Просим докер показать нам, какие существующие образы у нас есть
-```
-$ sudo docker images
-```
-создаём директорию logs, создаём интеррактивный процесс logger и записываем туда текст, параллельно записывая кучу ненужных символов, пытаясь понять, как вернуться к терминалу
-```
-$ mkdir logs
-$ sudo docker run -it -v "$(pwd)/logs/:/home/logs/" logger
-text1
-text2
-text3
-<C-D>
-```
-Просим докер вывести подробную информацию о контейнере
-```
-$ sudo docker inspect logger
-```
-Проверяем сохранены ли файлы
-```
-$ cat logs/log.txt
-```
-Используем gsed
-```
-$ gsed -i 's/lab07/lab08/g' README.md
-```
-Редактируем трэвис ямл
-```
-$ vim .travis.yml
-/lang<CR>o
-services:
-- docker<ESC>
-jVGdo
-script:
-- docker build -t logger .<ESC>
-:wq
-```
-Добавляем всё на гитхаб
-```
-$ git add Dockerfile
-$ git add .travis.yml
-$ git commit -m"adding Dockerfile"
-$ git push origin master
-```
-Логинимся в трэвис и запускаем его
-```
-$ travis login --token
+Логинимся в трэвис
+```sh
+$ travis login --auto
 $ travis enable
 ```
+
+```sh
+# Создание тега с сообщением с информацией а затем вервефеируем этот тег, тут у меня возникла идея написать сразу -s -v, но эксперементировать я не стал и дальше пошёл по туториалу
+$ git tag -s v0.1.0.0
+$ git tag -v v0.1.0.0
+# Смотрим на изменения
+$ git show v0.1.0.0
+# Пушим
+$ git push origin master --tags
+```
+Затем здесь делаем релиз, НО у меня не работала эта команда потому что у меня не скачался go, но вскоре проблема была устранена и всё удачно заработало(к слову у меня не рботала 3-я команда, но после того как я создал новый токен и прописал его, всё заработало)
+```sh
+$ github-release --version
+$ github-release info -u ${GITHUB_USERNAME} -r lab09_tutorial
+$ github-release release \
+    --user ${GITHUB_USERNAME} \
+    --repo lab09_tutorial \
+    --tag v0.1.0.0 \
+    --name "libprint" \
+    --description "my first release"
+```
+
+```sh
+# Добавление артефакта с указанием ОС и архитектуры, на которых происходила компиляция библиотек
+$ export PACKAGE_OS=`uname -s` PACKAGE_ARCH=`uname -m` 
+$ export PACKAGE_FILENAME=print-${PACKAGE_OS}-${PACKAGE_ARCH}.tar.gz
+$ github-release upload \
+    --user ${GITHUB_USERNAME} \
+    --repo lab09 \
+    --tag v0.1.0.0 \
+    --name "${PACKAGE_FILENAME}" \
+    --file _build/*.tar.gz
+```
+
+```sh
+$ github-release info -u ${GITHUB_USERNAME} -r lab09
+
+# Скачивание артефакта из раздела релизов для проверки
+$ wget https://github.com/${GITHUB_USERNAME}/lab09_tutorial/releases/download/v0.1.0.0/${PACKAGE_FILENAME}
+#Проверяем что за архив мы скачали
+$ tar -ztf ${PACKAGE_FILENAME}
+```
+

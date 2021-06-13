@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/rogopl/Rogopl/workspace/projects/lab06_tutorial
+CMAKE_SOURCE_DIR = /home/rogopl/Rogopl/workspace/projects/lab09_tutorial
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/rogopl/Rogopl/workspace/projects/lab06_tutorial/_build
+CMAKE_BINARY_DIR = /home/rogopl/Rogopl/workspace/projects/lab09_tutorial/_build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -68,18 +68,6 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -94,7 +82,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/rogopl/Rogopl/workspace/projects/lab06_tutorial/_build/CPackSourceConfig.cmake
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /home/rogopl/Rogopl/workspace/projects/lab09_tutorial/_build/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -146,11 +134,23 @@ package/fast: package
 
 .PHONY : package/fast
 
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rogopl/Rogopl/workspace/projects/lab06_tutorial/_build/CMakeFiles /home/rogopl/Rogopl/workspace/projects/lab06_tutorial/_build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rogopl/Rogopl/workspace/projects/lab09_tutorial/_build/CMakeFiles /home/rogopl/Rogopl/workspace/projects/lab09_tutorial/_build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rogopl/Rogopl/workspace/projects/lab06_tutorial/_build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rogopl/Rogopl/workspace/projects/lab09_tutorial/_build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -179,6 +179,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named demo
+
+# Build rule for target.
+demo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 demo
+.PHONY : demo
+
+# fast build rule for target.
+demo/fast:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/build
+.PHONY : demo/fast
+
+#=============================================================================
 # Target rules for targets named print
 
 # Build rule for target.
@@ -190,6 +203,33 @@ print: cmake_check_build_system
 print/fast:
 	$(MAKE) -f CMakeFiles/print.dir/build.make CMakeFiles/print.dir/build
 .PHONY : print/fast
+
+demo/main.o: demo/main.cpp.o
+
+.PHONY : demo/main.o
+
+# target to build an object file
+demo/main.cpp.o:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/demo/main.cpp.o
+.PHONY : demo/main.cpp.o
+
+demo/main.i: demo/main.cpp.i
+
+.PHONY : demo/main.i
+
+# target to preprocess a source file
+demo/main.cpp.i:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/demo/main.cpp.i
+.PHONY : demo/main.cpp.i
+
+demo/main.s: demo/main.cpp.s
+
+.PHONY : demo/main.s
+
+# target to generate assembly for a file
+demo/main.cpp.s:
+	$(MAKE) -f CMakeFiles/demo.dir/build.make CMakeFiles/demo.dir/demo/main.cpp.s
+.PHONY : demo/main.cpp.s
 
 sources/print.o: sources/print.cpp.o
 
@@ -225,14 +265,18 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... install/local"
 	@echo "... edit_cache"
 	@echo "... package_source"
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... package"
+	@echo "... install/local"
+	@echo "... demo"
 	@echo "... print"
+	@echo "... demo/main.o"
+	@echo "... demo/main.i"
+	@echo "... demo/main.s"
 	@echo "... sources/print.o"
 	@echo "... sources/print.i"
 	@echo "... sources/print.s"

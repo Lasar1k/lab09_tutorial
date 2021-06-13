@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/rogopl/Rogopl/workspace/projects/lab06_tutorial/include 
+CXX_INCLUDES = -I/home/rogopl/Rogopl/workspace/projects/lab09_tutorial/include 
 
