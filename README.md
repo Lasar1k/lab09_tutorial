@@ -10,11 +10,11 @@ $ source scripts/activate
 ```
 Клонируем репозиторий
 ```
-$ git clone https://github.com/${GITHUB_USERNAME}/lab777 lab888
-$ cd lab888
+$ git clone https://github.com/${GITHUB_USERNAME}/lab07_tutorial lab08_tutorial
+$ cd lab08_tutorial
 $ git submodule update --init
 $ git remote remove origin
-$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab888
+$ git remote add origin https://github.com/${GITHUB_USERNAME}/lab08_tutorial
 ```
 Создаём докер и указываем базовый образ
 ```
